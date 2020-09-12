@@ -19,10 +19,6 @@ namespace PrimeNumberGen {
                 for (int i = 0; i < suspects.Length; i++)
                 {
                     int suspect = suspects[i];
-                    if (suspect == 1299721)
-                    {
-                        var stop = 1;
-                    }
                     if (IsPrime(suspect) && KnownPrimes.Contains(suspect) == false)
                     {
                         KnownPrimes.Add(suspect);
