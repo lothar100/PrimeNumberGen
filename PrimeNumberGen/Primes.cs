@@ -6,25 +6,25 @@ using System.Text;
 namespace PrimeNumberGen {
     public static class Primes {
 
-        private static List<int> KnownPrimes = new List<int>() { 2, 3, 5, 7, 11, 13 };
-        private static Stopwatch stopwatch = new Stopwatch();
+        private static List<int> _KnownPrimes = new List<int>() { 2, 3, 5, 7, 11, 13 };
+        private static Stopwatch _Stopwatch = new Stopwatch();
 
         private static int GenerateNewPrimes(int numPrimes)
         {
-            int bitLevel = BinaryHelper.bitCount(KnownPrimes[KnownPrimes.Count - 1]);
+            int bitLevel = BinaryHelper.bitCount(_KnownPrimes[_KnownPrimes.Count - 1]);
             int newPrimes = 0;
-            while (numPrimes > KnownPrimes.Count)
+            while (numPrimes > _KnownPrimes.Count)
             {
                 int[] suspects = BinaryHelper.nBitPrimeSuspects(bitLevel);
                 for (int i = 0; i < suspects.Length; i++)
                 {
                     int suspect = suspects[i];
-                    if (IsPrime(suspect) && KnownPrimes.Contains(suspect) == false)
+                    if (IsPrime(suspect) && _KnownPrimes.Contains(suspect) == false)
                     {
-                        KnownPrimes.Add(suspect);
+                        _KnownPrimes.Add(suspect);
                         newPrimes++;
                     }
-                    if (numPrimes <= KnownPrimes.Count) break;
+                    if (numPrimes <= _KnownPrimes.Count) break;
                 }
                 bitLevel++;
             }
@@ -33,16 +33,15 @@ namespace PrimeNumberGen {
 
         public static void DisplayNthPrimeInfo(int numPrimes)
         {
-            stopwatch.Restart();
-            int newPrimes = 0;
-            if (numPrimes > KnownPrimes.Count) newPrimes = GenerateNewPrimes(numPrimes);
-            stopwatch.Stop();
+            _Stopwatch.Restart();
+            int newPrimes = GenerateNewPrimes(numPrimes);
+            _Stopwatch.Stop();
 
             Console.WriteLine("");
-            Console.WriteLine($"Number of primes known: {KnownPrimes.Count}");
+            Console.WriteLine($"Number of primes known: {_KnownPrimes.Count}");
             Console.WriteLine($"Number of new primes generated: {newPrimes}");
-            Console.WriteLine($"Nth Prime (N = {numPrimes}): {KnownPrimes[numPrimes - 1]}");
-            Console.WriteLine($"Elapsed Time: {stopwatch.ElapsedMilliseconds}ms");
+            Console.WriteLine($"Nth Prime (N = {numPrimes}): {_KnownPrimes[numPrimes - 1]}");
+            Console.WriteLine($"Elapsed Time: {_Stopwatch.ElapsedMilliseconds}ms");
             Console.WriteLine("");
         }
 

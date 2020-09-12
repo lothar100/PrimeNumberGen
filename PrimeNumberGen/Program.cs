@@ -8,19 +8,32 @@ namespace PrimeNumberGen {
             while (true)
             {
                 string inputString = string.Empty;
+                bool canParse = false;
                 int numPrimes = 0;
 
-                Console.WriteLine("Display Info for Nth Prime: ");
-                Console.Write("N = ");
+                Console.WriteLine("Display Info for N-th Prime: ");
+                Console.WriteLine("N = ");
 
-                while (int.TryParse(inputString, out numPrimes) == false || numPrimes <= 0)
+                while (canParse == false || numPrimes <= 0)
                 {
+                    ResetCursorPosition(inputString.Length);
                     inputString = Console.ReadLine();
+                    canParse = int.TryParse(inputString, out numPrimes);
                 }
 
                 Primes.DisplayNthPrimeInfo(numPrimes);
             }
-            
+        }
+
+        private static void ResetCursorPosition(int length)
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write("N = ");
+            for (int i = 0; i < length; i++)
+            {
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(4, Console.CursorTop);
         }
     }
 }

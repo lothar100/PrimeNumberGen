@@ -18,7 +18,6 @@ namespace PrimeNumberGen {
             return rev;
         }
 
-
         public static int[] nBitPrimeSuspects(int nPower)
         {
             int min = (1 << nPower - 1);
