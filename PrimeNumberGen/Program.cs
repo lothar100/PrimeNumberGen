@@ -16,24 +16,13 @@ namespace PrimeNumberGen {
 
                 while (canParse == false || numPrimes <= 0)
                 {
-                    ResetCursorPosition(inputString.Length);
+                    Utils.ResetCursorPosition(inputString.Length, "N = ");
                     inputString = Console.ReadLine();
                     canParse = int.TryParse(inputString, out numPrimes);
                 }
 
                 Primes.DisplayNthPrimeInfo(numPrimes);
             }
-        }
-
-        private static void ResetCursorPosition(int length)
-        {
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.Write("N = ");
-            for (int i = 0; i < length; i++)
-            {
-                Console.Write(" ");
-            }
-            Console.SetCursorPosition(4, Console.CursorTop);
         }
     }
 }

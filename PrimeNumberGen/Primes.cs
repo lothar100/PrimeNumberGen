@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 namespace PrimeNumberGen {
     public static class Primes {
 
         private static List<int> _KnownPrimes = new List<int>() { 2, 3, 5, 7, 11, 13 };
         private static Stopwatch _Stopwatch = new Stopwatch();
+        private static CancellationTokenSource _TokenSource = new CancellationTokenSource();
 
         private static int GenerateNewPrimes(int numPrimes)
         {
@@ -33,10 +35,12 @@ namespace PrimeNumberGen {
 
         public static void DisplayNthPrimeInfo(int numPrimes)
         {
+            ConsoleSpinner.Start();
             _Stopwatch.Restart();
             int newPrimes = GenerateNewPrimes(numPrimes);
             _Stopwatch.Stop();
-
+            ConsoleSpinner.Stop();
+            
             Console.WriteLine("");
             Console.WriteLine($"Number of primes known: {_KnownPrimes.Count}");
             Console.WriteLine($"Number of new primes generated: {newPrimes}");
