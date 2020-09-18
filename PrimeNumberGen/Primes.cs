@@ -9,26 +9,25 @@ namespace PrimeNumberGen {
 
         private static List<int> _KnownPrimes = new List<int>() { 2, 3, 5, 7, 11, 13 };
         private static Stopwatch _Stopwatch = new Stopwatch();
-        private static CancellationTokenSource _TokenSource = new CancellationTokenSource();
+        private static int _SearchDepth = 1;
 
         private static int GenerateNewPrimes(int numPrimes)
         {
-            int bitLevel = BinaryHelper.bitCount(_KnownPrimes[_KnownPrimes.Count - 1]);
             int newPrimes = 0;
             while (numPrimes > _KnownPrimes.Count)
             {
-                int[] suspects = BinaryHelper.nBitPrimeSuspects(bitLevel);
-                for (int i = 0; i < suspects.Length; i++)
+                var pair = NextPrimeCompositePair();
+
+                if (IsPrime(pair.First))
                 {
-                    int suspect = suspects[i];
-                    if (IsPrime(suspect) && _KnownPrimes.Contains(suspect) == false)
-                    {
-                        _KnownPrimes.Add(suspect);
-                        newPrimes++;
-                    }
-                    if (numPrimes <= _KnownPrimes.Count) break;
+                    _KnownPrimes.Add(pair.First);
+                    newPrimes++;
                 }
-                bitLevel++;
+                if (IsPrime(pair.Second))
+                {
+                    _KnownPrimes.Add(pair.Second);
+                    newPrimes++;
+                }
             }
             return newPrimes;
         }
@@ -49,13 +48,17 @@ namespace PrimeNumberGen {
             Console.WriteLine("");
         }
 
+        private static (int First, int Second) NextPrimeCompositePair()
+        {
+            _SearchDepth++;
+            return (5 + (6 * _SearchDepth), 5 + (6 * _SearchDepth) + 2);
+        }
+
         public static bool IsPrime(int value)
         {
             //-- Already accounted for
             //if (value <= 3 && value > 1) return true;
             //if (value == 1 || value % 2 == 0 || value % 3 == 0) return false;
-
-            if (value % 3 == 0) return false;
 
             //-- Improved further by observing that all primes are of the form 6k ± 1
             for (int i = 5; i * i <= value; i += 6)

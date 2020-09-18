@@ -14,7 +14,7 @@ namespace PrimeNumberGen {
                 Console.WriteLine("Display Info for N-th Prime: ");
                 Console.WriteLine("N = ");
 
-                while (canParse == false || numPrimes <= 0)
+                while (canParse == false || numPrimes <= 1)
                 {
                     Utils.ResetCursorPosition(inputString.Length, "N = ");
                     inputString = Console.ReadLine();
