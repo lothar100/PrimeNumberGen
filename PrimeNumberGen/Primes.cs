@@ -8,28 +8,33 @@ namespace PrimeNumberGen {
     public static class Primes {
 
         private static List<int> _KnownPrimes = new List<int>() { 2, 3, 5, 7, 11, 13 };
+        private static Queue<int> _NewPrimes = new Queue<int>();
         private static Stopwatch _Stopwatch = new Stopwatch();
         private static int _SearchDepth = 1;
-
+        
         private static int GenerateNewPrimes(int numPrimes)
         {
-            int newPrimes = 0;
-            while (numPrimes > _KnownPrimes.Count)
+            _NewPrimes.Clear();
+
+            int numPrimesNeeded = numPrimes - _KnownPrimes.Count;
+
+            while (numPrimesNeeded > _NewPrimes.Count)
             {
                 var pair = NextPrimeCompositePair();
 
                 if (IsPrime(pair.First))
                 {
-                    _KnownPrimes.Add(pair.First);
-                    newPrimes++;
+                    _NewPrimes.Enqueue(pair.First);
                 }
                 if (IsPrime(pair.Second))
                 {
-                    _KnownPrimes.Add(pair.Second);
-                    newPrimes++;
+                    _NewPrimes.Enqueue(pair.Second);
                 }
             }
-            return newPrimes;
+
+            _KnownPrimes.AddRange(_NewPrimes);
+
+            return _NewPrimes.Count;
         }
 
         public static void DisplayNthPrimeInfo(int numPrimes)
