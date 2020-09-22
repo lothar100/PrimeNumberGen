@@ -19,42 +19,42 @@ namespace PrimeNumberGen {
         {
             _NewPrimes.Clear();
 
-            //int threadCount = 8;
+            int threadCount = 8;
 
-            //double lowerBound = _KnownPrimes.Count * Math.Log(_KnownPrimes.Count);
-            //double upperBound = numPrimes * Math.Log(numPrimes);
-            //int numPrimesNeeded = (int)(upperBound - lowerBound) / 2 / 3;
+            double lowerBound = _KnownPrimes.Count * Math.Log(_KnownPrimes.Count);
+            double upperBound = numPrimes * Math.Log(numPrimes);
+            int numPrimesNeeded = (int)(upperBound - lowerBound) / 2 / 3;
 
             int numPrimesNeeded = numPrimes - _KnownPrimes.Count;
 
-            //for (int i = 0; i < numPrimesNeeded; i++)
-            //{
-            //    var pair = NextPrimeCompositePair();
-            //    _WorkQueue.Enqueue(pair);
-            //}
+            for (int i = 0; i < numPrimesNeeded; i++)
+            {
+                var pair = NextPrimeCompositePair();
+                _WorkQueue.Enqueue(pair);
+            }
 
-            //var threads = new Thread[threadCount];
-            //for (int i = 0; i < threadCount - 1; i++)
-            //{
-            //    threads[i] = new Thread(() =>
-            //    {
-            //        while (_WorkQueue.TryDequeue(out (int First, int Second) pair))
-            //        {
-            //            if (IsPrime(pair.First))
-            //            {
-            //                _NewPrimes.Enqueue(pair.First);
-            //            }
-            //            if (IsPrime(pair.Second))
-            //            {
-            //                _NewPrimes.Enqueue(pair.Second);
-            //            }
-            //        }
-            //    });
-            //    threads[i].Start();
-            //}
+            var threads = new Thread[threadCount];
+            for (int i = 0; i < threadCount - 1; i++)
+            {
+                threads[i] = new Thread(() =>
+                {
+                    while (_WorkQueue.TryDequeue(out (int First, int Second) pair))
+                    {
+                        if (IsPrime(pair.First))
+                        {
+                            _NewPrimes.Enqueue(pair.First);
+                        }
+                        if (IsPrime(pair.Second))
+                        {
+                            _NewPrimes.Enqueue(pair.Second);
+                        }
+                    }
+                });
+                threads[i].Start();
+            }
 
-            //for (var i = 0; i < threadCount - 1; i++)
-            //    threads[i].Join();
+            for (var i = 0; i < threadCount - 1; i++)
+                threads[i].Join();
 
             while (numPrimesNeeded > _NewPrimes.Count)
             {
@@ -71,7 +71,7 @@ namespace PrimeNumberGen {
             }
 
             var newPrimes = _NewPrimes.ToList();
-            //newPrimes.Sort();
+            newPrimes.Sort();
             _KnownPrimes.AddRange(newPrimes);
 
             return _NewPrimes.Count;
