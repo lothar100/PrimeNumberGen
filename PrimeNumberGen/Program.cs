@@ -20,7 +20,7 @@ namespace PrimeNumberGen {
                     inputString = Console.ReadLine();
                     canParse = int.TryParse(inputString, out numPrimes);
                 }
-
+                
                 Primes.DisplayNthPrimeInfo(numPrimes);
             }
         }
