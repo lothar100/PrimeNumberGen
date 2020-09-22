@@ -25,7 +25,7 @@ namespace PrimeNumberGen {
             double upperBound = numPrimes * Math.Log(numPrimes);
             int numPrimesNeeded = (int)(upperBound - lowerBound) / 2 / 3;
 
-            int numPrimesNeeded = numPrimes - _KnownPrimes.Count;
+            //int numPrimesNeeded = numPrimes - _KnownPrimes.Count;
 
             for (int i = 0; i < numPrimesNeeded; i++)
             {
